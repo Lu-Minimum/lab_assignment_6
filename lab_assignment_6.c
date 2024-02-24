@@ -2,23 +2,35 @@
 
 int search(int numbers[], int low, int high, int value) 
 {
-	//Double check for null or invalid lower bound
+	//Check for null or invalid bound
 	//though the program would have errors long before this would be called
-	if (numbers==NULL||low<0) {
+	if (numbers==NULL||low<0||high<low) {
 		return -1;
 	}
 
-	//Check if the lower bound has passed the upper bound
-	if (low<=high) {
-		//Check lowest index
+	//Check if the lower bound and the upper bound are the same
+	if (low==high) {
+		//Check value
 		if (numbers[low]==value) {
 			return low;
 		}
-		//Recursively check with lower bound moved up
-		return search(numbers,low+1,high,value);
-	}
 
-	//If low is greater than high, then all numbers in bounds have been checked
+	} else {
+		//Search lower half
+		int a = search(numbers, low, (low+high)/2, value);
+		if (a>=0) {
+			return a;
+		}
+		
+		//Search upper half
+		a = search(numbers, ((low+high)/2)+1, high, value);
+		if (a>=0) {
+			return a;
+		}
+	}
+	
+	//Default return value is -1
+	//Returns when value is not found
 	return -1;
 }
 
